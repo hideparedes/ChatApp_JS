@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Lora|Roboto:400,700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.login {
+  color: aliceblue;
+  background-color: #222831;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.login h1 {
+  font-family: 'Lora', serif;
+  font-size: 5rem;
+}
+
+.form {
+  width: 50%;
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+}
+
+.form input {
+  width: 100%;
+  height: 100%;
+  color: aliceblue;
+  padding-top: 20px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 50px;
+}
+
+.form label {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  color: aliceblue;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-bottom: 1px solid aliceblue;
+}
+
+.form label::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-bottom: 3px solid #00adb5;
+  left: 0px;
+  bottom: -1px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.content-name {
+  font-size: 25px;
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+  transition: all 0.3s ease;
+}
+
+.form input:focus+.label-name .content-name,
+.form input:valid+.label-name .content-name {
+  transform: translateY(-200%);
+  color: #00adb5;
+}
+
+.form input:focus+.label-name::after,
+.form input:valid+.label-name::after {
+  transform: translateX(0%);
+}
+
+.chat-area {
+  width: 100%;
+  height: 100vh;
+}
+
+#usernameInput {
+  height: 30px;
+}

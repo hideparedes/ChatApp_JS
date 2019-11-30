@@ -2,17 +2,18 @@ const socket = io("http://localhost:3000");
 const messageContainer = document.getElementById("message-container");
 const messageForm = document.getElementById("send-container");
 const inputMessage = document.getElementById("input-message");
+const usernameInput = document.getElementById('usernameInput');
+const btn = document.getElementById("username-btn");
+// const name = prompt("Enter your username");
+// socket.emit("new user", name);
 
-const name = prompt("Enter your username");
-socket.emit("new user", name);
-
-socket.on("connecter", name => {
-  addToChat(`${name} is connected`);
+btn.addEventListener('click', (event) => {
+  event.preventDefault();
+  const name = usernameInput.value;
+  socket.emit('user name', name);
 });
 
-socket.on("user disconnected", name => {
-  addToChat(`${name} has left the chat`);
-});
+
 
 messageForm.addEventListener("submit", event => {
   event.preventDefault();
@@ -20,6 +21,14 @@ messageForm.addEventListener("submit", event => {
   addToChat(`You: ${message}`);
   socket.emit("send message", message);
   inputMessage.value = "";
+});
+
+socket.on("connected", name => {
+  addToChat(`${name} is connected`);
+});
+
+socket.on("user disconnected", name => {
+  addToChat(`${name} has left the chat`);
 });
 
 socket.on("display message", data => {
@@ -31,3 +40,19 @@ function addToChat(message) {
   messageElement.innerText = message;
   messageContainer.append(messageElement);
 }
+
+
+
+// const name = usernameInput.getAttribute('value');
+
+// usernameInput.addEventListener('keydown', event => {
+//   if (event.which == 13) {
+
+//     console.log(name);
+
+//     // if (name) {
+//     //   socket.emit('user', name);
+//     // }
+
+//   }
+// })
