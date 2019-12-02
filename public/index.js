@@ -1,11 +1,10 @@
 const socket = io("http://localhost:3000");
-const messageContainer = document.getElementById("message-container");
+const messageList = document.getElementById("message-list");
 const messageForm = document.getElementById("send-container");
 const inputMessage = document.getElementById("input-message");
 const usernameInput = document.getElementById('usernameInput');
 const btn = document.getElementById("username-btn");
-// const name = prompt("Enter your username");
-// socket.emit("new user", name);
+
 
 btn.addEventListener('click', (event) => {
   event.preventDefault();
@@ -18,29 +17,60 @@ btn.addEventListener('click', (event) => {
 messageForm.addEventListener("submit", event => {
   event.preventDefault();
   const message = inputMessage.value;
-  addToChat(`You: ${message}`);
+  addYourMessage(message);
   socket.emit("send message", message);
   inputMessage.value = "";
 });
 
 socket.on("connected", name => {
-  addToChat(`${name} is connected`);
+  addToMessageList(`${name} is connected`);
 });
 
 socket.on("user disconnected", name => {
-  addToChat(`${name} has left the chat`);
+  addToMessageList(`${name} has left the chat`);
 });
 
 socket.on("display message", data => {
-  addToChat(data);
+  addToMessageList(data);
+
+
 });
 
-function addToChat(message) {
-  const messageElement = document.createElement("P");
-  messageElement.innerText = message;
-  messageContainer.append(messageElement);
+
+function addYourMessage(message) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message-row", "your-message");
+
+  const textElement = document.createElement('div');
+  textElement.innerText = message;
+  textElement.classList.add("message-text");
+  messageElement.appendChild(textElement);
+
+  const time = document.createElement('div');
+  time.classList.add("message-time");
+  time.innerText = "14:32";
+  messageElement.appendChild(time);
+
+  messageList.append(messageElement)
 }
 
+function addToMessageList(message) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message-row", "other-message");
+
+  const textElement = document.createElement('div');
+  textElement.innerText = message;
+  textElement.classList.add("message-text");
+  messageElement.appendChild(textElement);
+
+  const time = document.createElement('div');
+  time.classList.add("message-time");
+  time.innerText = "14:32";
+  messageElement.appendChild(time);
+  messageList.append(messageElement)
+
+
+}
 
 
 // const name = usernameInput.getAttribute('value');
