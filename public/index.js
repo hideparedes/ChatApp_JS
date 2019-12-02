@@ -32,8 +32,6 @@ socket.on("user disconnected", name => {
 
 socket.on("display message", data => {
   addToMessageList(data);
-
-
 });
 
 
@@ -68,21 +66,15 @@ function addToMessageList(message) {
   time.innerText = "14:32";
   messageElement.appendChild(time);
   messageList.append(messageElement)
-
-
 }
 
+const observer = new MutationObserver(scrollToBottom);
 
-// const name = usernameInput.getAttribute('value');
+const config = {
+  childList: true
+};
+observer.observe(messageList, config);
 
-// usernameInput.addEventListener('keydown', event => {
-//   if (event.which == 13) {
-
-//     console.log(name);
-
-//     // if (name) {
-//     //   socket.emit('user', name);
-//     // }
-
-//   }
-// })
+function scrollToBottom() {
+  messageList.scrollTop = messageList.scrollHeight;
+}
