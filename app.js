@@ -33,7 +33,9 @@ io.on("connection", socket => {
   })
 
   socket.on("send message", message => {
-    socket.broadcast.emit("display message", message);
+
+    const user = users[socket.id];
+    socket.broadcast.emit("display message", message, user)
   });
 
   socket.on("disconnect", () => {

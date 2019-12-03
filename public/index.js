@@ -12,6 +12,10 @@ btn.addEventListener('click', (event) => {
   socket.emit('user name', name);
 });
 
+function getCurrentTime() {
+  const time = new Date();
+  return `${time.getHours()}:${time.getMinutes()}`;
+}
 
 
 messageForm.addEventListener("submit", event => {
@@ -23,16 +27,34 @@ messageForm.addEventListener("submit", event => {
 });
 
 socket.on("connected", name => {
-  addToMessageList(`${name} is connected`);
+  checkStatus(`${name} is connected`);
 });
 
 socket.on("user disconnected", name => {
-  addToMessageList(`${name} has left the chat`);
+  checkStatus(`${name} has left the chat`);
 });
 
-socket.on("display message", data => {
-  addToMessageList(data);
+socket.on("display message", (data, user) => {
+  addToMessageList(data, user);
 });
+
+
+function checkStatus(user) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message-row", "other-message");
+
+  const textElement = document.createElement('div');
+  textElement.innerText = user;
+  textElement.classList.add("message-text");
+  messageElement.appendChild(textElement);
+
+  const time = document.createElement('div');
+  time.classList.add("message-time");
+  time.innerText = getCurrentTime();
+  messageElement.appendChild(time);
+
+  messageList.append(messageElement)
+}
 
 
 function addYourMessage(message) {
@@ -46,16 +68,18 @@ function addYourMessage(message) {
 
   const time = document.createElement('div');
   time.classList.add("message-time");
-  time.innerText = "14:32";
+  time.innerText = getCurrentTime();
   messageElement.appendChild(time);
 
   messageList.append(messageElement)
 }
 
-function addToMessageList(message) {
+function addToMessageList(message, user) {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message-row", "other-message");
-
+  const name = document.createElement("div");
+  name.innerHTML = user;
+  messageElement.appendChild(name);
   const textElement = document.createElement('div');
   textElement.innerText = message;
   textElement.classList.add("message-text");
@@ -63,7 +87,7 @@ function addToMessageList(message) {
 
   const time = document.createElement('div');
   time.classList.add("message-time");
-  time.innerText = "14:32";
+  time.innerText = getCurrentTime();
   messageElement.appendChild(time);
   messageList.append(messageElement)
 }

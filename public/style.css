@@ -14,6 +14,8 @@
 
 }
 
+/* ---------- Login Section ------------------ */
+
 .login {
   color: aliceblue;
   background-color: #222831;
@@ -35,7 +37,6 @@
   position: relative;
   height: 180px;
   overflow: hidden;
-  /* background-color: rgba(207, 146, 33, 0.6); */
 }
 
 .form input {
@@ -115,14 +116,7 @@
 }
 
 
-/* ---------------------------- */
-
-.chat-area {
-  width: 100%;
-  height: 100vh;
-}
-
-/* ---------------------------- */
+/* ---------- Chat Section ------------------ */
 
 #chat-section {
   background-color: #222831;
