@@ -138,8 +138,8 @@
   grid-template-rows: 75px 1fr 80px;
   grid-template-areas:
     "list-title chat-title"
-    "conversation-list message-list"
-    "new-room-container chat-form";
+    "online-list message-list"
+    "leave-room-container chat-form";
 }
 
 #list-title {
@@ -153,36 +153,35 @@
 
 }
 
-#conversation-list {
-  background-color: #00adb5;
-  grid-area: conversation-list;
+
+#online-list {
+  background-color: #393e46;
+  grid-area: online-list;
   overflow-y: scroll;
 }
 
-#room {
-  background-color: #00adb5;
+
+#members {
+  background-color: #222831;
   padding: 15px 15px 15px 10px;
   border-bottom: 1px solid black;
-}
-
-.room-title {
   color: #eeeeee;
 }
 
-.created-date {
-  color: lightgray;
-}
+/* .user-name {
+  color: #eeeeee;
+} */
 
-#new-room-container {
-  background-color: #00adb5;
-  grid-area: new-room-container;
+#leave-room-container {
+  background-color: #393e46;
+  grid-area: leave-room-container;
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom-left-radius: 15px;
 }
 
-#new-room-container button {
+#leave-room-container button {
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
@@ -190,7 +189,8 @@
 }
 
 #chat-title {
-  background-color: #00adb5;
+  background-color: #393e46;
+  color: #eeeeee;
   grid-area: chat-title;
   display: flex;
   justify-content: center;
@@ -271,14 +271,28 @@
   padding: 10px 20px;
   border: none;
   border-radius: 10px 0 0 10px;
+
 }
 
 #chat-form button {
   padding: 10px 20px;
   border: none;
   border-radius: 0 10px 10px 0;
+  background-color: #00adb5;
+  color: #222831;
+  box-shadow: 0 2px #999;
   cursor: pointer;
+  outline: none;
 }
+
+#chat-form button:active {
+  /* background-color: #393e46; */
+  box-shadow: 0 1px #666;
+  transform: translateY(1px);
+}
+
+
+
 
 ::-webkit-scrollbar {
   display: none;

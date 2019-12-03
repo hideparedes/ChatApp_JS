@@ -28,10 +28,12 @@ messageForm.addEventListener("submit", event => {
 
 socket.on("connected", name => {
   checkStatus(`${name} is connected`);
+  addOnlineList(name);
 });
 
 socket.on("user disconnected", name => {
   checkStatus(`${name} has left the chat`);
+  removeFromList(name);
 });
 
 socket.on("display message", (data, user) => {
@@ -101,4 +103,28 @@ observer.observe(messageList, config);
 
 function scrollToBottom() {
   messageList.scrollTop = messageList.scrollHeight;
+}
+
+
+const onlineList = document.getElementById("online-list");
+
+
+function addOnlineList(name) {
+  const member = document.createElement("div");
+  member.innerText = name;
+  member.id = "members"
+  onlineList.append(member);
+}
+
+function removeFromList(name) {
+  const element = document.querySelectorAll("#members");
+
+
+  element.forEach(user => {
+
+    if (user.textContent === name) {
+      user.remove();
+    }
+  });
+
 }
