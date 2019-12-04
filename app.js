@@ -10,19 +10,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-const today = new Date();
-const options = {
-  weekday: "long",
-  month: "long",
-  day: "numeric"
-};
+
 
 const users = {};
 
 app.get("/", (req, res) => {
-  res.render("home", {
-    date: today.toLocaleDateString("en-US", options)
-  });
+  res.render("home");
 });
 
 io.on("connection", socket => {
@@ -45,7 +38,31 @@ io.on("connection", socket => {
 });
 
 
+const rooms = {
+  Martin: {}
+}
 
+app.get("/room/:roomName", (req, res) => {
+  res.render("room", {
+    rooms: rooms,
+    roomName: req.params.roomName
+  });
+})
+
+app.post("/room", (req, res) => {
+  const roomName = req.body.room;
+
+  res.redirect(`/room/${roomName}`);
+});
+
+// Test--------------------------------------------
+app.get("/test", (req, res) => {
+  res.render("test", {
+    rooms: rooms
+  })
+});
+
+//-------------------------------------------------
 server.listen(3000, () => {
   console.log("Listening on port 3000");
 });
