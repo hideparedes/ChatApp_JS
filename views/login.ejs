@@ -1,0 +1,29 @@
+<%- include("layout/header") -%>
+
+<div class="login">
+  <h1>Welcome to Chat App</h1>
+
+  <div class="form">
+    <input type="text" id="usernameInput" name="name" autocomplete="off" required />
+    <label for="name" class="label-name">
+      <span class="content-name">Name</span>
+    </label>
+    <button type="submit" id="username-btn">Enter chat</button>
+  </div>
+</div>
+
+<div class="room-container">
+  <% Object.keys(rooms).forEach(room => { %>
+  <div class="room-card">
+    <div><%= room %></div>
+    <a href="/<%= room %>">join</a>
+  </div>
+  <% }) %>
+</div>
+
+<form action="/room" method="post">
+  <input type="text" name="room" required>
+  <button type="submit">Create room</button>
+</form>
+
+<%- include("layout/footer") -%>

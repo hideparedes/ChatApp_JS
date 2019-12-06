@@ -1,25 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("layout/header") -%>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
+<div id="chat-section">
+  <div id="chat-container">
+    <div id="list-title">
+      <p>Members</p>
+    </div>
+    <div id="online-list">
+      <div id="members">John Smith</div>
+    </div>
 
-<body>
-  <div class="test">
-    <% Object.keys(rooms).forEach(room => { %>
+    <div id="leave-room-container">
+      <button>Leave room</button>
+    </div>
 
-    <a href="/room/<%= room %>"><%= room %></a>
-    <% }) %>
+    <div id="chat-title">
+      <h1><%= roomName %></h1>
+    </div>
+
+    <div id="message-list"></div>
+
+    <div id="chat-form">
+      <form id="send-container">
+        <input type="text" id="input-message">
+        <button type="submit" id="send-btn">Send</button>
+      </form>
+    </div>
+
   </div>
+</div>
 
-  <form action="/room" method="post">
-    <input type="text" name="room" required>
-    <button type="submit">Create room</button>
-  </form>
-</body>
-
-</html>
+<%- include("layout/footer") -%>

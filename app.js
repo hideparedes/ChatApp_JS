@@ -11,12 +11,54 @@ app.use(bodyParser.urlencoded({
 }));
 
 
+// app.get("/", (req, res) => {
+//   res.render("home");
+// });
 
-const users = {};
+const rooms = {}
 
+// Testing--------------------------------------------
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("login", {
+    rooms: rooms
+  })
 });
+
+app.post("/room", (req, res) => {
+  const roomName = req.body.room;
+
+  if (rooms[roomName] != null) {
+    return res.redirect("/");
+  }
+
+  rooms[roomName] = {
+    users: {}
+  };
+
+  res.redirect(`/${roomName}`);
+  console.log(rooms);
+  
+});
+
+app.get("/:id", (req, res) => {
+  const roomName = req.params.id;
+
+  if (rooms[roomName] == null) {
+    return res.redirect("/");
+  }
+
+  res.render("test", {
+    roomName: roomName
+  });
+});
+
+
+server.listen(3000, () => {
+  console.log("Listening on port 3000");
+});
+
+//-------------------------------------------------
+const users = {};
 
 io.on("connection", socket => {
   socket.on('user name', name => {
@@ -35,34 +77,4 @@ io.on("connection", socket => {
     socket.broadcast.emit("user disconnected", users[socket.id]);
     delete users[socket.id];
   });
-});
-
-
-const rooms = {
-  Martin: {}
-}
-
-app.get("/room/:roomName", (req, res) => {
-  res.render("room", {
-    rooms: rooms,
-    roomName: req.params.roomName
-  });
-})
-
-app.post("/room", (req, res) => {
-  const roomName = req.body.room;
-
-  res.redirect(`/room/${roomName}`);
-});
-
-// Test--------------------------------------------
-app.get("/test", (req, res) => {
-  res.render("test", {
-    rooms: rooms
-  })
-});
-
-//-------------------------------------------------
-server.listen(3000, () => {
-  console.log("Listening on port 3000");
 });
