@@ -1,22 +1,55 @@
-const socket = io("http://localhost:3000");
-const messageList = document.getElementById("message-list");
-const messageForm = document.getElementById("send-container");
-const inputMessage = document.getElementById("input-message");
-const usernameInput = document.getElementById('usernameInput');
-const btn = document.getElementById("username-btn");
+const socket = io('http://localhost:3000')
 
-
-btn.addEventListener('click', (event) => {
+document.getElementById("username-form").addEventListener("submit", (event) => {
   event.preventDefault();
-  const name = usernameInput.value;
-  socket.emit('user name', name);
+  const username = document.getElementById("username");
+  socket.emit("username", username.value);
 });
 
-function getCurrentTime() {
-  const time = new Date();
-  return `${time.getHours()}:${time.getMinutes()}`;
+
+//---------------------------------------------
+const chatWindow = document.getElementById("chat-window");
+const onlineList = document.getElementById("online-list");
+
+
+socket.on("online", username => {
+  checkUserStatus(username, "is connected");
+  onlineUsers(username);
+});
+
+socket.on("display message", (message, user) => {
+  addToChatWindow(message, user);
+  console.log("display js " + user);
+});
+
+socket.on("user disconnected", username => {
+  checkUserStatus(username, "is disconnected");
+});
+
+
+function checkUserStatus(name, status) {
+  const messageCard = document.createElement("div");
+  messageCard.classList.add("message-card", "from-others");
+  messageCard.id = "message-card";
+  const content = document.createElement("div");
+  content.innerText = name + " " + status;
+  content.classList.add("content")
+  messageCard.append(content);
+  chatWindow.append(messageCard);
 }
 
+
+
+function onlineUsers(name) {
+  const user = document.createElement("div");
+  user.innerText = name;
+  user.id = "friends";
+  onlineList.append(user);
+}
+
+
+const messageForm = document.getElementById("send-container");
+const inputMessage = document.getElementById("input-message");
 
 messageForm.addEventListener("submit", event => {
   event.preventDefault();
@@ -26,121 +59,30 @@ messageForm.addEventListener("submit", event => {
   inputMessage.value = "";
 });
 
-socket.on("connected", name => {
-  checkStatus(`${name} is connected`);
-  addOnlineList(name);
-});
-
-socket.on("user disconnected", name => {
-  checkStatus(`${name} has left the chat`);
-  removeFromList(name);
-});
-
-socket.on("display message", (data, user) => {
-  addToMessageList(data, user);
-});
-
-
-function checkStatus(user) {
-  const messageElement = document.createElement("div");
-  messageElement.classList.add("message-row", "other-message");
-
-  const textElement = document.createElement('div');
-  textElement.innerText = user;
-  textElement.classList.add("message-text");
-  messageElement.appendChild(textElement);
-
-  const time = document.createElement('div');
-  time.classList.add("message-time");
-  time.innerText = getCurrentTime();
-  messageElement.appendChild(time);
-
-  messageList.append(messageElement)
-}
 
 
 function addYourMessage(message) {
-  const messageElement = document.createElement("div");
-  messageElement.classList.add("message-row", "your-message");
+  const messageCard = document.createElement("div");
+  messageCard.classList.add("message-card", "from-you");
+  const content = document.createElement("div");
+  content.innerText = message;
+  content.classList.add("content");
+  messageCard.append(content);
 
-  const textElement = document.createElement('div');
-  textElement.innerText = message;
-  textElement.classList.add("message-text");
-  messageElement.appendChild(textElement);
-
-  const time = document.createElement('div');
-  time.classList.add("message-time");
-  time.innerText = getCurrentTime();
-  messageElement.appendChild(time);
-
-  messageList.append(messageElement)
-}
-
-function addToMessageList(message, user) {
-  const messageElement = document.createElement("div");
-  messageElement.classList.add("message-row", "other-message");
-  const name = document.createElement("div");
-  name.innerHTML = user;
-  messageElement.appendChild(name);
-  const textElement = document.createElement('div');
-  textElement.innerText = message;
-  textElement.classList.add("message-text");
-  messageElement.appendChild(textElement);
-
-  const time = document.createElement('div');
-  time.classList.add("message-time");
-  time.innerText = getCurrentTime();
-  messageElement.appendChild(time);
-  messageList.append(messageElement)
-}
-
-const observer = new MutationObserver(scrollToBottom);
-
-const config = {
-  childList: true
-};
-observer.observe(messageList, config);
-
-function scrollToBottom() {
-  messageList.scrollTop = messageList.scrollHeight;
+  chatWindow.append(messageCard);
 }
 
 
-const onlineList = document.getElementById("online-list");
+function addToChatWindow(message, user) {
+  const messageCard = document.createElement("div");
+  messageCard.classList.add("message-card", "from-others");
+  const userName = document.createElement("div");
+  userName.innerText = user;
+  const content = document.createElement("div");
+  content.innerText = message;
+  content.classList.add("content");
+  messageCard.append(userName);
+  messageCard.append(content);
 
-
-function addOnlineList(name) {
-  const member = document.createElement("div");
-  member.innerText = name;
-  member.id = "members"
-  onlineList.append(member);
+  chatWindow.append(messageCard);
 }
-
-function removeFromList(name) {
-  const element = document.querySelectorAll("#members");
-
-
-  element.forEach(user => {
-
-    if (user.textContent === name) {
-      user.remove();
-    }
-  });
-
-}
-
-const roomContainer = document.getElementById("room-container");
-
-socket.on("room-created", room => {
-  const roomElement = document.createElement("div");
-  roomElement.innerText = room;
-  const roomLink = document.createElement("a");
-  roomLink.href = `room/${room}`;
-  roomLink.innerText = "join";
-  roomContainer.append(roomElement);
-  roomContainer.append(roomLink);
-});
-
-// const roomContainer = document.getElementById("test");
-
-// socket.on("room-created", room )
