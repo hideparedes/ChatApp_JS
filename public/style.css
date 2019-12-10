@@ -131,6 +131,7 @@
   transform: translate(-50%, 0%);
   transition: all 0.3s ease;
   cursor: pointer;
+  outline: none;
 }
 
 .username-btn:hover {
@@ -173,6 +174,7 @@
 
 #side-bar-header {
   background-color: #3f72af;
+  color: #f9f7f7;
   padding: 20px 0;
   border-radius: 10px 0 0 10px;
 }
@@ -194,12 +196,17 @@
   background-color: #f9f7f7;
   padding: 10px 40px;
   border-radius: 0 10px 0 0;
+  overflow-y: scroll;
 }
 
 .message-card {
   margin-bottom: 15px;
   display: grid;
   grid-template-columns: 70%;
+}
+
+.message-card p {
+  font-size: 14px;
 }
 
 .content {
@@ -251,4 +258,17 @@
   border-radius: 0 5px 5px 0;
   background-color: #3f72af;
   cursor: pointer;
+  box-shadow: 0 1px #999;
+  color: #f9f7f7;
+  outline: none;
+}
+
+#send-container button:active {
+  box-shadow: 0 0 #666;
+  transform: translateY(1px);
+
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
